@@ -1,6 +1,6 @@
 public class MatrixOperations
 {
-    public static double[] MatrixVecXply( double[][] matrix, double[] vector )
+    public static double[] MatrixVecXply( double[][] matrix, double[] vector , double[] output)
     {
         int m = matrix.length;
         int n = matrix[ 0 ].length;
@@ -12,7 +12,7 @@ public class MatrixOperations
             return null;
         }
                                // actual memory for the output array of each layer
-        double[] output = new double[ m ];  // m x n * n x p = m x p = m x 1
+        //double[] output = new double[ m ];  // m x n * n x p = m x p = m x 1
         
 
         for ( int i = 0; i < m; i++ )

@@ -1,5 +1,5 @@
 
-public class Main
+public class Main           // SOFTMAX IN OUTPUT LAYER
 {
     public static void main( String[] args )
     {
@@ -11,9 +11,9 @@ public class Main
                             3,
                             1 };
 
-        int[] hidden = { 2 };
+        int[] hidden = { 2 , 3};
         
-        NeuralNetwork nn = new NeuralNetwork( vector, hidden, 3);
+        NeuralNetwork nn = new NeuralNetwork( vector, hidden, 5);
 
         System.out.println(nn);
 
@@ -22,5 +22,4 @@ public class Main
         System.out.println(nn);
 
     }
-
 }

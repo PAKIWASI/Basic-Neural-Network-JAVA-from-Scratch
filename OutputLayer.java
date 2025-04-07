@@ -1,9 +1,9 @@
 public class OutputLayer extends Layer
 {
 
-    public OutputLayer( double[] input, int layersize )
+    public OutputLayer( double[] input, int inputSize, int layersize )
     {
-        super( input, layersize );
+        super( input, inputSize, layersize );
         
     }
 

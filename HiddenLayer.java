@@ -1,9 +1,9 @@
 public class HiddenLayer extends Layer
 {
 
-    public HiddenLayer( double[] input, int layersize )
+    public HiddenLayer( double[] input, int inputsize, int layersize )
     {
-        super( input, layersize );
+        super( input, inputsize, layersize );
         
     }
 

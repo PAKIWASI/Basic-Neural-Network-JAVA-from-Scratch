@@ -13,15 +13,15 @@ public abstract class Layer
     private final int layerSize;
 
 
-    public Layer( double[] input, int layersize )
+    public Layer( double[] input, int inputSize, int layerSize )
     {
-        this.inputSize = input.length;
-        this.layerSize = layersize;
+        this.inputSize = inputSize;
+        this.layerSize = layerSize;
 
-        bias = new double[ layersize ];
+        bias = new double[ layerSize ];
         this.input = input;              // reference to input vector, memory for it allocated in respective layer
-        weights = new double[ layersize ][ inputSize ];
-    
+        weights = new double[ layerSize ][ inputSize ];
+        output = new double[ layerSize ];
         initBias( rand );
         initWeights( rand );
     }
@@ -51,7 +51,7 @@ public abstract class Layer
     public void calculateOutput() // z = Wx + b, a = sigma(z)
     {
                                 // intermediae, output memory is allocated in func
-        double[] intermediate = MatrixOperations.MatrixVecXply( weights, input );
+        double[] intermediate = MatrixOperations.MatrixVecXply( weights, input , output );
 
         for ( int i = 0; i < layerSize; i++ )
         
@@ -61,10 +61,9 @@ public abstract class Layer
         output = activation( intermediate ); 
     }
 
-    public double[] getoutput()
-    {
-        return output;
-    }
+    public double[] getOutput() { return output; }
+
+    public int getOutputSize() { return layerSize; }
     
     @Override
     public String toString()
@@ -72,22 +71,29 @@ public abstract class Layer
         System.out.print( "Input Vector : [ " );
         for ( int i = 0; i < inputSize; i++ )
             System.out.print( input[ i ] + " " );
-        System.out.print( "]\n\n" );
-        
+        System.out.print( "]\n" );
+
         System.out.print( " Weight Matrix :\n" );
         for ( int i = 0; i < layerSize; i++ )
         {
             System.out.print( "[ " );
             for ( int j = 0; j < inputSize; j++ )
                 System.out.print( weights[ i ][ j ] + " " );
-            System.out.print( "]\n\n" );
+            System.out.print( "]\n" );
         }
 
-        System.out.println( " Output Vector : [ " );
+        System.out.print( " Bias Vector : [ " );
+        for ( int i = 0; i < layerSize; i++ )
+            System.out.print( bias[ i ] + " " );
+        System.out.print( "]\n" );
+
+        System.out.print( " Output Vector : [ " );
         for ( int i = 0; i < layerSize; i++ )
             System.out.print( output[ i ] + " " );
-        System.out.print( "]\n\n" );
+        System.out.print( "]\n" );
         
+        System.err.println("----------------------------------------------------------------\n");
+
         return "";
     }
     

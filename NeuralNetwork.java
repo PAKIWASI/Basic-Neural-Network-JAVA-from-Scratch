@@ -13,16 +13,16 @@ public class NeuralNetwork
         
         layers = new Layer[ hidden.length + 1 ]; // hidden + output layers, input is just a vector
 
-        layers[ 0 ] = new HiddenLayer( input, hidden[ 0 ] );
+        layers[ 0 ] = new HiddenLayer( input, inputSize, hidden[ 0 ] );
 
         for ( int i = 1; i < hidden.length; i++ )
         
-            layers[ i ] = new HiddenLayer( layers[ i - 1 ].getoutput(), hidden[ i ] );
+            layers[ i ] = new HiddenLayer( layers[ i - 1 ].getOutput(), layers[ i - 1 ].getOutputSize() ,hidden[ i ] );
         
 
-        layers[ hidden.length ] = new OutputLayer( layers[ hidden.length - 1 ].getoutput() , outputSize );
+        layers[ hidden.length ] = new OutputLayer( layers[ hidden.length - 1 ].getOutput(), layers[ hidden.length - 1].getOutputSize(), outputSize );
 
-        finalOutput = layers[ hidden.length ].getoutput();
+        finalOutput = layers[ hidden.length ].getOutput();
     }
 
     public void forwardPass()
