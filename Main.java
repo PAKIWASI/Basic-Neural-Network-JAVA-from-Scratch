@@ -1,9 +1,9 @@
 
-public class Main           // SOFTMAX IN OUTPUT LAYER
-{
-    public static void main( String[] args )
-    {
-        double[][] matrix = { { 1, 2, 3 },
+public class Main           // SOFTMAX IN OUTPUT LAYER            // Cross Entropy Loss
+{                           // si = e^zi / summation(e^zi)        // L = - summation(yi*log(pi))  yi->predicted pi-> true
+    public static void main( String[] args )       // dsi/dzi = zi ( 1 - zi) (diagonal)    dsi/dz = -zixzj ( other than diagonal)
+    {                                              // softmax deriv combined with cross entropy loss deriv = si - yi
+        double[][] matrix = { { 1, 2, 3 },         // https://www.parasdahal.com/softmax-crossentropy
                               { 4, 5, 6 },
                               { 7, 8, 9 } };
     

@@ -11,8 +11,7 @@ public class MatrixOperations
             System.err.println( "Illegel Matrix Multiplication: In m x n xply v x 1, n != v" );
             return null;
         }
-                               // actual memory for the output array of each layer
-        //double[] output = new double[ m ];  // m x n * n x p = m x p = m x 1
+
         
 
         for ( int i = 0; i < m; i++ )
@@ -24,4 +23,21 @@ public class MatrixOperations
         
         return output;
     }    
+
+
+    // Multiply matrix (transposed) by vector: Wᵀ · gradient
+    public static double[] matrixVectorMultiplyTranspose(double[][] matrix, double[] vector)
+    {
+        double[] result = new double[matrix[0].length];
+
+        for (int i = 0; i < matrix[0].length; i++)
+
+            for (int j = 0; j < vector.length; j++)
+             
+                result[i] += matrix[j][i] * vector[j];
+            
+        
+        return result;
+    }
+    
 }

@@ -1,7 +1,7 @@
 public class NeuralNetwork
 {
     private final int inputSize;
-    private final double[] input;
+    private double[] input;
     private final Layer[] layers;
     private final double[] finalOutput;
 
@@ -31,6 +31,27 @@ public class NeuralNetwork
             l.calculateOutput(); 
     }
 
+    public void backPropagation(double[] trueOutput)
+    {
+        // Start with output layer gradient
+        double[] gradient = ((OutputLayer) layers[layers.length - 1]).calculateOutputGradient(finalOutput, trueOutput);
+        
+        // Backpropagate through layers
+        for (int i = layers.length - 1; i >= 0; i--)
+        {
+            layers[i].updateParameters(gradient);
+            if (i > 0)
+                // Compute gradient for previous layer
+                gradient = MatrixOperations.matrixVectorMultiplyTranspose( layers[i].getweights(), gradient );
+            
+        }
+    }
+
+    public void setInput(double[] newInput) {
+        this.input = newInput;
+        layers[0].setInput(newInput); // Propagate to first hidden layer
+    }
+
     @Override
     public String toString()
     {
@@ -39,5 +60,4 @@ public class NeuralNetwork
 
         return "";
     }
-
 }

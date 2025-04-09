@@ -2,12 +2,18 @@ import java.util.Random;
 
 public abstract class Layer 
 {
+
+    protected final double LEARNING_RATE = 0.01; 
+
     private static Random rand = new Random();
     
     private double[] input;
     private double[][] weights;
     private double[] bias;
-    private double[] output;
+    private double[] preActivationOutput; // for backprop
+    private double[] output; 
+
+    private double[] localGradient;
 
     private final int inputSize;
     private final int layerSize;
@@ -18,10 +24,15 @@ public abstract class Layer
         this.inputSize = inputSize;
         this.layerSize = layerSize;
 
-        bias = new double[ layerSize ];
         this.input = input;              // reference to input vector, memory for it allocated in respective layer
+        localGradient = new double[ layerSize ];
+        preActivationOutput = new double[ layerSize ];
+
+        bias = new double[ layerSize ];
         weights = new double[ layerSize ][ inputSize ];
         output = new double[ layerSize ];
+        
+
         initBias( rand );
         initWeights( rand );
     }
@@ -50,7 +61,6 @@ public abstract class Layer
 
     public void calculateOutput() // z = Wx + b, a = sigma(z)
     {
-                                // intermediae, output memory is allocated in func
         double[] intermediate = MatrixOperations.MatrixVecXply( weights, input , output );
 
         for ( int i = 0; i < layerSize; i++ )
@@ -58,12 +68,44 @@ public abstract class Layer
             intermediate[ i ] += bias[ i ];
 
 
+        preActivationOutput = intermediate;
         output = activation( intermediate ); 
     }
 
-    public double[] getOutput() { return output; }
+    // Computes ∂L/∂W, ∂L/∂b, and ∂L/∂input (for previous layer)
+    public abstract void updateParameters( double[] upstreamGradient );
 
-    public int getOutputSize() { return layerSize; }
+    // Helper: Compute local gradient (∂L/∂z)
+    protected double[] computeLocalGradient( double[] upstreamGradient )
+    {
+        double[] derivative = activationDerivative( preActivationOutput );
+
+        double[] localGradient = new double[ upstreamGradient.length ];
+
+        for ( int i = 0; i < upstreamGradient.length; i++ )
+            
+            localGradient[ i ] = upstreamGradient[ i ] * derivative[ i ];
+        
+
+        return localGradient;
+    }
+
+
+    public double[] getOutput() {  return output;  }
+    
+    protected double[] getInput() { return input; }
+    
+    protected double[] getBias() { return bias; }
+
+    public double[][] getweights() { return weights; }
+
+    public int getOutputSize() {  return layerSize;  }
+
+    public int getInputSize() { return inputSize; }
+
+    public void setInput(double[] input) { this.input = input; }
+
+    
     
     @Override
     public String toString()
@@ -92,7 +134,7 @@ public abstract class Layer
             System.out.print( output[ i ] + " " );
         System.out.print( "]\n" );
         
-        System.err.println("----------------------------------------------------------------\n");
+        System.out.println( "----------------------------------------------------------------\n" );
 
         return "";
     }
